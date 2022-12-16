@@ -6,8 +6,8 @@ on:
     types:
       - created
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-      - '**/v[0-9]+.[0-9]+.[0-9]+'
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "**/v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
   lint:
@@ -54,7 +54,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: 
+    needs:
       - test
       - lint
     env:
@@ -95,36 +95,36 @@ jobs:
         run: |
           export DH_TAG=$(echo $TAG | sed 's/^v*//')
           docker manifest create \
-            containrrr/watchtower:$DH_TAG \
-            containrrr/watchtower:amd64-$DH_TAG \
-            containrrr/watchtower:i386-$DH_TAG \
-            containrrr/watchtower:armhf-$DH_TAG \
-            containrrr/watchtower:arm64v8-$DH_TAG
+            dada513/watchtower-podman:$DH_TAG \
+            dada513/watchtower-podman:amd64-$DH_TAG \
+            dada513/watchtower-podman:i386-$DH_TAG \
+            dada513/watchtower-podman:armhf-$DH_TAG \
+            dada513/watchtower-podman:arm64v8-$DH_TAG
           docker manifest create \
-            ghcr.io/containrrr/watchtower:$DH_TAG \
-            ghcr.io/containrrr/watchtower:amd64-$DH_TAG \
-            ghcr.io/containrrr/watchtower:i386-$DH_TAG \
-            ghcr.io/containrrr/watchtower:armhf-$DH_TAG \
-            ghcr.io/containrrr/watchtower:arm64v8-$DH_TAG
+            ghcr.io/dada513/watchtower-podman:$DH_TAG \
+            ghcr.io/dada513/watchtower-podman:amd64-$DH_TAG \
+            ghcr.io/dada513/watchtower-podman:i386-$DH_TAG \
+            ghcr.io/dada513/watchtower-podman:armhf-$DH_TAG \
+            ghcr.io/dada513/watchtower-podman:arm64v8-$DH_TAG
       - name: Annotate manifest for version
         run: |
           for REPO in '' ghcr.io/ ; do
-          
+
           docker manifest annotate \
-            ${REPO}containrrr/watchtower:$(echo $TAG | sed 's/^v*//') \
-            ${REPO}containrrr/watchtower:i386-$(echo $TAG | sed 's/^v*//') \
+            ${REPO}dada513/watchtower-podman:$(echo $TAG | sed 's/^v*//') \
+            ${REPO}dada513/watchtower-podman:i386-$(echo $TAG | sed 's/^v*//') \
             --os linux \
             --arch 386
-          
+
           docker manifest annotate \
-            ${REPO}containrrr/watchtower:$(echo $TAG | sed 's/^v*//') \
-            ${REPO}containrrr/watchtower:armhf-$(echo $TAG | sed 's/^v*//') \
+            ${REPO}dada513/watchtower-podman:$(echo $TAG | sed 's/^v*//') \
+            ${REPO}dada513/watchtower-podman:armhf-$(echo $TAG | sed 's/^v*//') \
             --os linux \
             --arch arm
-      
+
           docker manifest annotate \
-            ${REPO}containrrr/watchtower:$(echo $TAG | sed 's/^v*//') \
-            ${REPO}containrrr/watchtower:arm64v8-$(echo $TAG | sed 's/^v*//') \
+            ${REPO}dada513/watchtower-podman:$(echo $TAG | sed 's/^v*//') \
+            ${REPO}dada513/watchtower-podman:arm64v8-$(echo $TAG | sed 's/^v*//') \
             --os linux \
             --arch arm64 \
             --variant v8
@@ -133,67 +133,46 @@ jobs:
       - name: Create manifest for latest
         run: |
           docker manifest create \
-            containrrr/watchtower:latest \
-            containrrr/watchtower:amd64-latest \
-            containrrr/watchtower:i386-latest \
-            containrrr/watchtower:armhf-latest \
-            containrrr/watchtower:arm64v8-latest
+            dada513/watchtower-podman:latest \
+            dada513/watchtower-podman:amd64-latest \
+            dada513/watchtower-podman:i386-latest \
+            dada513/watchtower-podman:armhf-latest \
+            dada513/watchtower-podman:arm64v8-latest
           docker manifest create \
-            ghcr.io/containrrr/watchtower:latest \
-            ghcr.io/containrrr/watchtower:amd64-latest \
-            ghcr.io/containrrr/watchtower:i386-latest \
-            ghcr.io/containrrr/watchtower:armhf-latest \
-            ghcr.io/containrrr/watchtower:arm64v8-latest
+            ghcr.io/dada513/watchtower-podman:latest \
+            ghcr.io/dada513/watchtower-podman:amd64-latest \
+            ghcr.io/dada513/watchtower-podman:i386-latest \
+            ghcr.io/dada513/watchtower-podman:armhf-latest \
+            ghcr.io/dada513/watchtower-podman:arm64v8-latest
       - name: Annotate manifest for latest
         run: |
           for REPO in '' ghcr.io/ ; do
 
           docker manifest annotate \
-            ${REPO}containrrr/watchtower:latest \
-            ${REPO}containrrr/watchtower:i386-latest \
+            ${REPO}dada513/watchtower-podman:latest \
+            ${REPO}dada513/watchtower-podman:i386-latest \
             --os linux \
             --arch 386
-      
+
           docker manifest annotate \
-            ${REPO}containrrr/watchtower:latest \
-            ${REPO}containrrr/watchtower:armhf-latest \
+            ${REPO}dada513/watchtower-podman:latest \
+            ${REPO}dada513/watchtower-podman:armhf-latest \
             --os linux \
             --arch arm
             
           docker manifest annotate \
-            ${REPO}containrrr/watchtower:latest \
-            ${REPO}containrrr/watchtower:arm64v8-latest \
+            ${REPO}dada513/watchtower-podman:latest \
+            ${REPO}dada513/watchtower-podman:arm64v8-latest \
             --os linux \
             --arch arm64 \
             --variant v8
 
           done
-      - name: Push manifests to Dockerhub
-        env:
-          DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        run: |
-          docker login -u $DOCKER_USER -p $DOCKER_TOKEN && \
-            docker manifest push containrrr/watchtower:$(echo $TAG | sed 's/^v*//') && \
-            docker manifest push containrrr/watchtower:latest
       - name: Push manifests to GitHub Container Registry
         env:
           DOCKER_USER: ${{ secrets.BOT_USERNAME }}
           DOCKER_TOKEN: ${{ secrets.BOT_GHCR_PAT }}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_TOKEN ghcr.io && \
-            docker manifest push ghcr.io/containrrr/watchtower:$(echo $TAG | sed 's/^v*//') && \
-            docker manifest push ghcr.io/containrrr/watchtower:latest
-
-  renew-docs:
-    name: Refresh pkg.go.dev
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Pull new module version
-      uses: andrewslotin/go-proxy-pull-action@bfc19ec6536e1638181b2ad6a03e16c7ccfb122f #master@2022-10-14
-
-  
-  
-
-  
+            docker manifest push ghcr.io/dada513/watchtower-podman:$(echo $TAG | sed 's/^v*//') && \
+            docker manifest push ghcr.io/dada513/watchtower-podman:latest
