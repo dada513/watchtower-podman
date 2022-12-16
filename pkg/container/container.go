@@ -3,7 +3,6 @@ package container
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 
@@ -233,13 +232,6 @@ func (c Container) runtimeConfig() *dockercontainer.Config {
 	config := c.containerInfo.Config
 	hostConfig := c.containerInfo.HostConfig
 	imageConfig := c.imageInfo.Config
-
-	// detect podman
-	_, err := os.Stat("/run/.containerenv")
-	if err == nil {
-		// podman workaround
-		hostConfig.Ulimits = nil
-	}
 
 	if config.WorkingDir == imageConfig.WorkingDir {
 		config.WorkingDir = ""

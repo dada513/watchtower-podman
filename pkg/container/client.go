@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 	"time"
 
@@ -226,7 +227,12 @@ func (client dockerClient) StartContainer(c Container) (t.ContainerID, error) {
 	}()
 
 	name := c.Name()
-
+	_, err := os.Stat("/run/.containerenv")
+	if err == nil {
+		// podman workaround
+		name = name[1:]
+		hostConfig.Ulimits = nil
+	}
 	log.Infof("Creating %s", name)
 	createdContainer, err := client.api.ContainerCreate(bg, config, hostConfig, simpleNetworkConfig, nil, name)
 	if err != nil {
