@@ -31,7 +31,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     needs:
-      - test
       - lint
     env:
       CGO_ENABLED: 0
